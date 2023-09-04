@@ -141,7 +141,7 @@
                     @if(!empty($index_button))
 
                         @foreach($index_button as $ib)
-                            <a href='{{$ib["url"]}}' id='{{str_slug(isset($ib["id"]) ? $ib["id"] : $ib["label"])}}' class='btn {{($ib['color'])?'btn-'.$ib['color']:'btn-primary'}} btn-sm'
+                            <a href='{{$ib["url"]}}' id='{{\Illuminate\Support\Str::slug(isset($ib["id"]) ? $ib["id"] : $ib["label"])}}' class='btn {{($ib['color'])?'btn-'.$ib['color']:'btn-primary'}} btn-sm'
                                @if($ib['onClick']) onClick='return {{$ib["onClick"]}}' @endif
                                @if($ib['onMouseOver']) onMouseOver='return {{$ib["onMouseOver"]}}' @endif
                                @if($ib['onMouseOut']) onMouseOut='return {{$ib["onMouseOut"]}}' @endif
