@@ -1,7 +1,7 @@
 @extends("crudbooster::admin_template")
 @section("content")
     @push('head')
-        <link rel='stylesheet' href='<?php echo asset("vendor/crudbooster/assets/select2/dist/css/select2.min.css")?>'/>
+        <link rel='stylesheet' href='<?php echo asset('vendor/crudbooster/assets/select2/dist/css/select2.min.css')?>'/>
         <style>
             .select2-container--default .select2-selection--single {
                 border-radius: 0px !important
@@ -13,7 +13,7 @@
         </style>
     @endpush
     @push('bottom')
-        <script src='<?php echo asset("vendor/crudbooster/assets/select2/dist/js/select2.full.min.js")?>'></script>
+        <script src='<?php echo asset('vendor/crudbooster/assets/select2/dist/js/select2.full.min.js')?>'></script>
         <script>
             $(function () {
                 $('.select2').select2();
@@ -22,10 +22,11 @@
     @endpush
 
     <ul class="nav nav-tabs">
-        <li role="presentation"><a href="{{Route('ModulsControllerGetStep1')."/".$id}}"><i class='fa fa-info'></i> Step 1 - Module Information</a></li>
-        <li role="presentation"><a href="{{Route('ModulsControllerGetStep2')."/".$id}}"><i class='fa fa-table'></i> Step 2 - Table Display</a></li>
-        <li role="presentation" class="active"><a href="{{Route('ModulsControllerGetStep3')."/".$id}}"><i class='fa fa-plus-square-o'></i> Step 3 - Form Display</a></li>
-        <li role="presentation"><a href="{{Route('ModulsControllerGetStep4')."/".$id}}"><i class='fa fa-wrench'></i> Step 4 - Configuration</a></li>
+        <li role="presentation"><a href="{{Route('ModulsControllerGetStep1',['id'=>$id])}}"><i class='fa fa-info'></i> Step 1 - Module Information</a></li>
+        <li role="presentation"><a href="{{Route('ModulsControllerGetStep2',['id'=>$id])}}"><i class='fa fa-table'></i> Step 2 - Table Display</a></li>
+        <li role="presentation" class="active"><a href="{{Route('ModulsControllerGetStep3',['id'=>$id])}}"><i class='fa fa-plus-square-o'></i> Step 3 - Form
+                Display</a></li>
+        <li role="presentation"><a href="{{Route('ModulsControllerGetStep4',['id'=>$id])}}"><i class='fa fa-wrench'></i> Step 4 - Configuration</a></li>
     </ul>
     @push('head')
         <style>
@@ -446,7 +447,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <?php $index = 0;?>
+                    <?php $index = 0; ?>
                     @foreach($cb_form as $form)
                         <tr>
                             <td><input type='text' value='{{$form["label"]}}' placeholder="Input field label" onclick='showColumnSuggest(this)'
@@ -470,13 +471,13 @@
                                 <div class='option_area' style="display: none">
                                     <?php
 
-                                    $type = $form["type"] ?: "text";
-                                    $types = base_path('vendor/crocodicstudio/crudbooster/src/views/default/type_components/'.$type.'/info.json');
-                                    $types = file_get_contents($types);
-                                    $types = json_decode($types);
+                                    $type = $form['type'] ?: 'text';
+        $types = base_path('vendor/crocodicstudio/crudbooster/src/views/default/type_components/' . $type . '/info.json');
+        $types = file_get_contents($types);
+        $types = json_decode($types);
 
-                                    if($types):
-                                    ?>
+        if($types):
+            ?>
 
                                     @if($types->alert)
                                         <div class="alert alert-warning">
@@ -485,13 +486,13 @@
                                     @endif
 
                                     <?php
-                                    if($types->attribute->required):
-                                    foreach($types->attribute->required as $key=>$val):
-                                    @$value = $form[$key];
-                                    if(is_object($val)):
+            if($types->attribute->required):
+                foreach($types->attribute->required as $key => $val):
+                    @$value = $form[$key];
+                    if(is_object($val)):
 
-                                    if($val->type && $val->type == 'radio'):
-                                    ?>
+                        if($val->type && $val->type == 'radio'):
+                            ?>
                                     <div class="form-group">
                                         <label>{{$key}}</label>
                                         @foreach($val->enum as $enum)
@@ -508,7 +509,7 @@
                                         <input type="text" name="option[{{$index}}][{{$key}}]" placeholder="{{$val->placeholder}}" value="{{$value}}"
                                                class="form-control">
                                     </div>
-                                    <?php endif;?>
+                                    <?php endif; ?>
                                     <?php else:?>
 
                                     <div class="form-group">
@@ -516,28 +517,28 @@
                                         <input type="text" name="option[{{$index}}][{{$key}}]" placeholder="{{$val}}" value="{{$value}}" class="form-control">
                                     </div>
 
-                                    <?php endif;?>
-                                    <?php endforeach; endif;?>
+                                    <?php endif; ?>
+                                    <?php endforeach; endif; ?>
 
 
 
                                     <?php
-                                    if($types->attribute->requiredOne):
-                                    foreach($types->attribute->requiredOne as $key=>$val):
+                            if($types->attribute->requiredOne):
+                                foreach($types->attribute->requiredOne as $key => $val):
                                     @$value = $form[$key];
                                     ?>
                                     <div class="form-group">
                                         <label>{{$key}}</label>
                                         <input type="text" name="option[{{$index}}][{{$key}}]" placeholder="{{$val}}" value="{{$value}}" class="form-control">
                                     </div>
-                                    <?php endforeach; endif;?>
+                                    <?php endforeach; endif; ?>
 
                                     <?php
                                     if($types->attribute->optional):
-                                    foreach($types->attribute->optional as $key=>$val):
-                                    @$value = $form[$key];
+                                        foreach($types->attribute->optional as $key => $val):
+                                            @$value = $form[$key];
 
-                                    ?>
+                                            ?>
                                     <div class="form-group">
                                         <label>{{$key}}</label>
                                         @if(is_object($val) && property_exists($val, 'type') && $val->type == 'textarea')
@@ -548,10 +549,10 @@
                                                    class="form-control">
                                         @endif
                                     </div>
-                                    <?php endforeach; endif;?>
+                                    <?php endforeach; endif; ?>
 
 
-                                    <?php endif;?>
+                                    <?php endif; ?>
                                 </div>
                             </td>
                             <td>
@@ -561,7 +562,7 @@
                                 <a href="javascript:void(0)" class="btn btn-success btn-down"><i class='fa fa-arrow-down'></i></a>
                             </td>
                         </tr>
-                        <?php $index++;?>
+                        <?php $index++; ?>
                     @endforeach
 
                     <tr id='tr-sample' style="display: none">
@@ -602,7 +603,7 @@
         <div class="box-footer">
             <div align="right">
                 <button type="button" onclick="location.href='{{CRUDBooster::mainpath('step2').'/'.$id}}'" class="btn btn-default">&laquo; Back</button>
-                <input type="submit" class="btn btn-primary" value="Step 4 &raquo;">
+                <input type="submit" class="btn btn-primary" value="Step 3 &raquo;">
             </div>
         </div>
         </form>

@@ -6,7 +6,7 @@
 
 
         @if(CRUDBooster::getCurrentMethod() != 'getProfile')
-            <p><a href='{{CRUDBooster::mainpath()}}'>{{cbLang("form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name])}}</a></p>
+            <p><a href='{{CRUDBooster::mainpath()}}'>{{trans("crudbooster.form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name])}}</a></p>
     @endif
 
 
@@ -26,28 +26,28 @@
                         <strong>Note:</strong> To show the menu you have to create a menu at Menu Management
                     </div>
                     <div class='form-group'>
-                        <label>{{cbLang('privileges_name')}}</label>
+                        <label>{{trans('crudbooster.privileges_name')}}</label>
                         <input type='text' class='form-control' name='name' required value='{{ @$row->name }}'/>
                         <div class="text-danger">{{ $errors->first('name') }}</div>
                     </div>
 
                     <div class='form-group'>
-                        <label>{{cbLang('set_as_superadmin')}}</label>
+                        <label>{{trans('crudbooster.set_as_superadmin')}}</label>
                         <div id='set_as_superadmin' class='radio'>
                             <label><input required {{ (@$row->is_superadmin==1)?'checked':'' }} type='radio' name='is_superadmin'
-                                          value='1'/> {{cbLang('confirmation_yes')}}</label> &nbsp;&nbsp;
+                                          value='1'/> {{trans('crudbooster.confirmation_yes')}}</label> &nbsp;&nbsp;
                             <label><input {{ (@$row->is_superadmin==0)?'checked':'' }} type='radio' name='is_superadmin'
-                                          value='0'/> {{cbLang('confirmation_no')}}</label>
+                                          value='0'/> {{trans('crudbooster.confirmation_no')}}</label>
                         </div>
                         <div class="text-danger">{{ $errors->first('is_superadmin') }}</div>
                     </div>
 
                     <div class='form-group'>
-                        <label>{{cbLang('chose_theme_color')}}</label>
+                        <label>{{trans('crudbooster.chose_theme_color')}}</label>
                         <select name='theme_color' class='form-control' required>
-                            <option value=''>{{cbLang('chose_theme_color_select')}}</option>
+                            <option value=''>{{trans('crudbooster.chose_theme_color_select')}}</option>
                             <?php
-                            $skins = array(
+                            $skins = [
                                 'skin-blue',
                                 'skin-blue-light',
                                 'skin-yellow',
@@ -59,12 +59,12 @@
                                 'skin-red',
                                 'skin-red-light',
                                 'skin-black',
-                                'skin-black-light'
-                            );
+                                'skin-black-light',
+                            ];
                             foreach($skins as $skin):
-                            ?>
-                            <option <?=(@$row->theme_color == $skin) ? "selected" : ""?> value='<?=$skin?>'><?=ucwords(str_replace('-', ' ', $skin))?></option>
-                            <?php endforeach;?>
+                                ?>
+                            <option <?=(@$row->theme_color == $skin) ? 'selected' : ''?> value='<?=$skin?>'><?=ucwords(str_replace('-', ' ', $skin))?></option>
+                            <?php endforeach; ?>
                         </select>
                         <div class="text-danger">{{ $errors->first('theme_color') }}</div>
                         @push('bottom')
@@ -91,7 +91,7 @@
                     </div>
 
                     <div id='privileges_configuration' class='form-group'>
-                        <label>{{cbLang('privileges_configuration')}}</label>
+                        <label>{{trans('crudbooster.privileges_configuration')}}</label>
                         @push('bottom')
                             <script>
                                 $(function () {
@@ -119,6 +119,10 @@
                                         var is_ch = $(this).is(':checked');
                                         $(".is_delete").prop("checked", is_ch);
                                     })
+                                    $("#is_status").click(function () {
+                                        var is_ch = $(this).is(':checked');
+                                        $(".is_status").prop("checked", is_ch);
+                                    })
                                     $(".select_horizontal").click(function () {
                                         var p = $(this).parents('tr');
                                         var is_ch = $(this).is(':checked');
@@ -130,14 +134,15 @@
                         <table class='table table-striped table-hover table-bordered'>
                             <thead>
                             <tr class='active'>
-                                <th width='3%'>{{cbLang('privileges_module_list_no')}}</th>
-                                <th width='60%'>{{cbLang('privileges_module_list_mod_names')}}</th>
+                                <th width='3%'>{{trans('crudbooster.privileges_module_list_no')}}</th>
+                                <th width='60%'>{{trans('crudbooster.privileges_module_list_mod_names')}}</th>
                                 <th>&nbsp;</th>
-                                <th>{{cbLang('privileges_module_list_view')}}</th>
-                                <th>{{cbLang('privileges_module_list_create')}}</th>
-                                <th>{{cbLang('privileges_module_list_read')}}</th>
-                                <th>{{cbLang('privileges_module_list_update')}}</th>
-                                <th>{{cbLang('privileges_module_list_delete')}}</th>
+                                <th>{{trans('crudbooster.privileges_module_list_view')}}</th>
+                                <th>{{trans('crudbooster.privileges_module_list_create')}}</th>
+                                <th>{{trans('crudbooster.privileges_module_list_read')}}</th>
+                                <th>{{trans('crudbooster.privileges_module_list_update')}}</th>
+                                <th>{{trans('crudbooster.privileges_module_list_delete')}}</th>
+                                <th>{{trans('crudbooster.privileges_module_list_status')}}</th>
                             </tr>
                             <tr class='info'>
                                 <th>&nbsp;</th>
@@ -148,30 +153,33 @@
                                 <td align="center"><input title='Check all vertical' type='checkbox' id='is_read'/></td>
                                 <td align="center"><input title='Check all vertical' type='checkbox' id='is_edit'/></td>
                                 <td align="center"><input title='Check all vertical' type='checkbox' id='is_delete'/></td>
+                                <td align="center"><input title='Check all vertical' type='checkbox' id='is_status'/></td>
                             </tr>
                             </thead>
                             <tbody>
-                            <?php $no = 1;?>
+                            <?php $no = 1; ?>
                             @foreach($moduls as $modul)
                                 <?php
-                                $roles = DB::table('cms_privileges_roles')->where('id_cms_moduls', $modul->id)->where('id_cms_privileges', $row->id)->first();
-                                ?>
+                                    $roles = DB::table('cms_privileges_roles')->where('id_cms_moduls', $modul->id)->where('id_cms_privileges', $row->id)->first();
+                            ?>
                                 <tr>
-                                    <td><?php echo $no++;?></td>
+                                    <td><?php echo $no++; ?></td>
                                     <td>{{$modul->name}}</td>
                                     <td class='info' align="center"><input type='checkbox' title='Check All Horizontal'
-                                                                           <?=($roles->is_create && $roles->is_read && $roles->is_edit && $roles->is_delete) ? "checked" : ""?> class='select_horizontal'/>
+                                                                           <?=($roles->is_create && $roles->is_read && $roles->is_edit && $roles->is_delete && $roles->is_status) ? 'checked' : ''?> class='select_horizontal'/>
                                     </td>
                                     <td class='active' align="center"><input type='checkbox' class='is_visible' name='privileges[<?=$modul->id?>][is_visible]'
-                                                                             <?=@$roles->is_visible ? "checked" : ""?> value='1'/></td>
+                                                                             <?=@$roles->is_visible ? 'checked' : ''?> value='1'/></td>
                                     <td class='warning' align="center"><input type='checkbox' class='is_create' name='privileges[<?=$modul->id?>][is_create]'
-                                                                              <?=@$roles->is_create ? "checked" : ""?> value='1'/></td>
+                                                                              <?=@$roles->is_create ? 'checked' : ''?> value='1'/></td>
                                     <td class='info' align="center"><input type='checkbox' class='is_read' name='privileges[<?=$modul->id?>][is_read]'
-                                                                           <?=@$roles->is_read ? "checked" : ""?> value='1'/></td>
+                                                                           <?=@$roles->is_read ? 'checked' : ''?> value='1'/></td>
                                     <td class='success' align="center"><input type='checkbox' class='is_edit' name='privileges[<?=$modul->id?>][is_edit]'
-                                                                              <?=@$roles->is_edit ? "checked" : ""?> value='1'/></td>
+                                                                              <?=@$roles->is_edit ? 'checked' : ''?> value='1'/></td>
                                     <td class='danger' align="center"><input type='checkbox' class='is_delete' name='privileges[<?=$modul->id?>][is_delete]'
-                                                                             <?=@$roles->is_delete ? "checked" : ""?> value='1'/></td>
+                                                                             <?=@$roles->is_delete ? 'checked' : ''?> value='1'/></td>
+                                    <td class='default' align="center"><input type='checkbox' class='is_status' name='privileges[<?=$modul->id?>][is_status]'
+                                                                             <?=@$roles->is_status ? 'checked' : ''?> value='1'/></td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -182,8 +190,8 @@
                 </div><!-- /.box-body -->
                 <div class="box-footer" align="right">
                     <button type='button' onclick="location.href='{{CRUDBooster::mainpath()}}'"
-                            class='btn btn-default'>{{cbLang("button_cancel")}}</button>
-                    <button type='submit' class='btn btn-primary'><i class='fa fa-save'></i> {{cbLang("button_save")}}</button>
+                            class='btn btn-default'>{{trans("crudbooster.button_cancel")}}</button>
+                    <button type='submit' class='btn btn-primary'><i class='fa fa-save'></i> {{trans("crudbooster.button_save")}}</button>
                 </div><!-- /.box-footer-->
         </div><!-- /.box -->
 

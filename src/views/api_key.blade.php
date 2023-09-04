@@ -27,7 +27,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php $no = 0;?>
+                <?php $no = 0; ?>
                 @foreach($apikeys as $row)
                     <tr>
                         <td>{{ ++$no }}</td>
@@ -56,7 +56,7 @@
 
             @push('bottom')
                 <script>
-                    var lastno = <?=$no?>;
+                    var lastno = <?= $no?>;
 
                     function generate_screet_key() {
                         $.get("<?php echo route('ApiCustomControllerGetGenerateScreetKey')?>", function (resp) {

@@ -38,17 +38,17 @@
     </form>
 @elseif($command=='showFunction')
     <?php
-    if($key == 'sql') {
-    try {
-        $sessions = Session::all();
-        foreach ($sessions as $key => $val) {
-            $value = str_replace("[".$key."]", $val, $value);
+    if ($key == 'sql') {
+        try {
+            $sessions = Session::all();
+            foreach ($sessions as $key => $val) {
+                $value = str_replace('[' . $key . ']', $val, $value);
+            }
+            $sql = DB::select(DB::raw($value));
+        } catch (\Exception $e) {
+            die('ERROR');
         }
-        $sql = DB::select(DB::raw($value));
-    } catch (\Exception $e) {
-        die('ERROR');
-    }
-    ?>
+        ?>
 
     @if($sql)
         <table class='table table-striped'>
@@ -77,7 +77,7 @@
         </script>
     @endif
     <?php
-    }else {
+    } else {
         echo $value;
     }
     ?>

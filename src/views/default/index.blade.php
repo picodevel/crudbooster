@@ -5,15 +5,20 @@
     @if($index_statistic)
         <div id='box-statistic' class='row'>
             @foreach($index_statistic as $stat)
-                <div class="{{ ($stat['width'])?:'col-sm-3' }}">
-                    <div class="small-box bg-{{ $stat['color']?:'red' }}">
-                        <div class="inner">
-                            <h3>{{ $stat['count'] }}</h3>
-                            <p>{{ $stat['label'] }}</p>
+               <div class="{{ ($stat['width'])?:'col-sm-3' }} connectedSortable" style="padding-right: 0px">
+                    <div class="border-box">
+                        <a href="{{ $stat['url']?:'#' }}">
+                        <div class="small-box bg-{{ $stat['color']?:'red' }}">
+                            <div class="inner inner-box">
+                                <h3>{{ $stat['count'] }}</h3>
+                                <p>{{ $stat['label'] }}</p>
+                            </div>
+                            <div class="icon">
+                                <i class="{{ $stat['icon'] }}"></i>
+                            </div>
+                            <div class="small-box-footer"></div>
                         </div>
-                        <div class="icon">
-                            <i class="{{ $stat['icon'] }}"></i>
-                        </div>
+                        </a>
                     </div>
                 </div>
             @endforeach
@@ -26,8 +31,8 @@
 
 
     @if(g('return_url'))
-        <p><a href='{{g("return_url")}}'><i class='fa fa-chevron-circle-{{ cbLang('left') }}'></i>
-                &nbsp; {{cbLang('form_back_to_list',['module'=>urldecode(g('label'))])}}</a></p>
+        <p><a href='{{g("return_url")}}'><i class='fa fa-chevron-circle-{{ trans('crudbooster.left') }}'></i>
+                &nbsp; {{trans('crudbooster.form_back_to_list',['module'=>urldecode(g('label'))])}}</a></p>
     @endif
 
     @if($parent_table)
@@ -59,15 +64,15 @@
     <div class="box">
         <div class="box-header">
             @if($button_bulk_action && ( ($button_delete && CRUDBooster::isDelete()) || $button_selected) )
-                <div class="pull-{{ cbLang('left') }}">
+                <div class="pull-{{ trans('crudbooster.left') }}">
                     <div class="selected-action" style="display:inline-block;position:relative;">
                         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i
-                                    class='fa fa-check-square-o'></i> {{cbLang("button_selected_action")}}
+                                    class='fa fa-check-square-o'></i> {{trans("crudbooster.button_selected_action")}}
                             <span class="fa fa-caret-down"></span></button>
                         <ul class="dropdown-menu">
-                            @if($button_delete && CRUDBooster::isDelete())
-                                <li><a href="javascript:void(0)" data-name='delete' title='{{cbLang('action_delete_selected')}}'><i
-                                                class="fa fa-trash"></i> {{cbLang('action_delete_selected')}}</a></li>
+                            @if($button_delete && CRUDBooster::isDelete() && !in_array(CRUDBooster::getCurrentModule()->controller , ['AdminTrackingCobrokeController', 'AdminTrackingController']))
+                                <li><a href="javascript:void(0)" data-name='delete' title='{{trans('crudbooster.action_delete_selected')}}'><i
+                                                class="fa fa-trash"></i> {{trans('crudbooster.action_delete_selected')}}</a></li>
                             @endif
 
                             @if($button_selected)
@@ -81,19 +86,19 @@
                     </div><!--end-selected-action-->
                 </div><!--end-pull-left-->
             @endif
-            <div class="box-tools pull-{{ cbLang('right') }}" style="position: relative;margin-top: -5px;margin-right: -10px">
+            <div class="box-tools pull-{{ trans('crudbooster.right') }}" style="position: relative;margin-top: -5px;margin-right: -10px">
 
                 @if($button_filter)
                     <a style="margin-top:-23px" href="javascript:void(0)" id='btn_advanced_filter' data-url-parameter='{{$build_query}}'
-                       title='{{cbLang('filter_dialog_title')}}' class="btn btn-sm btn-default {{(Request::get('filter_column'))?'active':''}}">
-                        <i class="fa fa-filter"></i> {{cbLang("button_filter")}}
+                       title='{{trans('crudbooster.filter_dialog_title')}}' class="btn btn-sm btn-default {{(Request::get('filter_column'))?'active':''}}">
+                        <i class="fa fa-filter"></i> {{trans("crudbooster.button_filter")}}
                     </a>
                 @endif
 
                 <form method='get' style="display:inline-block;width: 260px;" action='{{Request::url()}}'>
                     <div class="input-group">
-                        <input type="text" name="q" value="{{ Request::get('q') }}" class="form-control input-sm pull-{{ cbLang('right') }}"
-                               placeholder="{{cbLang('filter_search')}}"/>
+                        <input type="text" name="q" value="{{ Request::get('q') }}" class="form-control input-sm pull-{{ trans('crudbooster.right') }}"
+                               placeholder="{{trans('crudbooster.filter_search')}}"/>
                         {!! CRUDBooster::getUrlParameters(['q']) !!}
                         <div class="input-group-btn">
                             @if(Request::get('q'))
@@ -101,11 +106,11 @@
                                 $parameters = Request::all();
                                 unset($parameters['q']);
                                 $build_query = urldecode(http_build_query($parameters));
-                                $build_query = ($build_query) ? "?".$build_query : "";
-                                $build_query = (Request::all()) ? $build_query : "";
+                                $build_query = ($build_query) ? '?' . $build_query : '';
+                                $build_query = (Request::all()) ? $build_query : '';
                                 ?>
                                 <button type='button' onclick='location.href="{{ CRUDBooster::mainpath().$build_query}}"'
-                                        title="{{cbLang('button_reset')}}" class='btn btn-sm btn-warning'><i class='fa fa-ban'></i></button>
+                                        title="{{trans('crudbooster.button_reset')}}" class='btn btn-sm btn-warning'><i class='fa fa-ban'></i></button>
                             @endif
                             <button type='submit' class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
                         </div>

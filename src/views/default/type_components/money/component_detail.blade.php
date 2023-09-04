@@ -1,1 +1,1 @@
-{{number_format($value)}}
+{{number_format($value?:0)}}

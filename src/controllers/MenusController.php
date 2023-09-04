@@ -1,26 +1,26 @@
-<?php namespace crocodicstudio\crudbooster\controllers;
+<?php
 
+namespace crocodicstudio\crudbooster\controllers;
+
+use crocodicstudio\crudbooster\fonts\Fontawesome;
 use CRUDBooster;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Excel;
-use Illuminate\Support\Facades\PDF;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
-use crocodicstudio\crudbooster\fonts\Fontawesome;
 
 class MenusController extends CBController
 {
     public function cbInit()
     {
-        $this->table = "cms_menus";
-        $this->primary_key = "id";
-        $this->title_field = "name";
+        $this->table = 'cms_menus';
+        $this->primary_key = 'id';
+        $this->title_field = 'name';
         $this->limit = 20;
-        $this->orderby = ["id" => "desc"];
+        $this->orderby = ['id' => 'desc'];
 
         $this->button_table_action = true;
-        $this->button_action_style = "FALSE";
+        $this->button_action_style = 'FALSE';
         $this->button_add = false;
         $this->button_delete = true;
         $this->button_edit = true;
@@ -59,13 +59,13 @@ class MenusController extends CBController
 					$('#form-group-module_slug').show();
 					$('#form-group-statistic_slug,#form-group-path').hide();
 					$('#module_slug').prop('required',true);
-					$('#form-group-module_slug label').append('<span class=\"text-danger\" title=\"".cbLang('this_field_is_required')."\">*</span>');
+					$('#form-group-module_slug label').append('<span class=\"text-danger\" title=\"" . trans('crudbooster.this_field_is_required') . "\">*</span>');
 				}else if(type_menu == 'Statistic') {
 					$('#form-group-statistic_slug').show();
 					$('#module_slug').prop('required',false);
 					$('#form-group-module_slug,#form-group-path').hide();
 					$('#statistic_slug').prop('required',true);
-					$('#form-group-statistic_slug label').append('<span class=\"text-danger\" title=\"".cbLang('this_field_is_required')."\">*</span>');
+					$('#form-group-statistic_slug label').append('<span class=\"text-danger\" title=\"" . trans('crudbooster.this_field_is_required') . "\">*</span>');
 				}else{
 					$('#module_slug').prop('required',false);
 					$('#form-group-module_slug,#form-group-statistic_slug').hide();
@@ -73,7 +73,7 @@ class MenusController extends CBController
 				}
 
 
-				function format(icon) {          
+				function format(icon) {
 	                  var originalOption = icon.element;
 	                  var label = $(originalOption).text();
 	                  var val = $(originalOption).val();
@@ -110,13 +110,13 @@ class MenusController extends CBController
 						$('#form-group-statistic_slug').show();
 						$('#statistic_slug').prop('required',true);
 						$('#form-group-statistic_slug label .text-danger').remove();
-						$('#form-group-statistic_slug label').append('<span class=\"text-danger\" title=\"".cbLang('this_field_is_required')."\">*</span>');
+						$('#form-group-statistic_slug label').append('<span class=\"text-danger\" title=\"" . trans('crudbooster.this_field_is_required') . "\">*</span>');
 					}else if (n == 'URL') {
 						$('input[name=path]').attr('placeholder','Please enter your URL');
 
 						$('#path').prop('required',true);
 						$('#form-group-path label .text-danger').remove();
-						$('#form-group-path label').append('<span class=\"text-danger\" title=\"".cbLang('this_field_is_required')."\">*</span>');
+						$('#form-group-path label').append('<span class=\"text-danger\" title=\"" . trans('crudbooster.this_field_is_required') . "\">*</span>');
 
 						$('#form-group-path').show();
 						$('#form-group-module_slug,#form-group-statistic_slug').hide();
@@ -125,16 +125,16 @@ class MenusController extends CBController
 
 						$('#path').prop('required',true);
 						$('#form-group-path label .text-danger').remove();
-						$('#form-group-path label').append('<span class=\"text-danger\" title=\"".cbLang('this_field_is_required')."\">*</span>');
+						$('#form-group-path label').append('<span class=\"text-danger\" title=\"" . trans('crudbooster.this_field_is_required') . "\">*</span>');
 
 						$('#form-group-path').show();
-						$('#form-group-module_slug,#form-group-statistic_slug').hide();					
+						$('#form-group-module_slug,#form-group-statistic_slug').hide();
 					}else {
 						$('#module_slug,#statistic_slug').prop('required',false);
-						
+
 						$('#path').prop('required',true);
 						$('#form-group-path label .text-danger').remove();
-						$('#form-group-path label').append('<span class=\"text-danger\" title=\"".cbLang('this_field_is_required')."\">*</span>');
+						$('#form-group-path label').append('<span class=\"text-danger\" title=\"" . trans('crudbooster.this_field_is_required') . "\">*</span>');
 
 						$('#form-group-path').show();
 						$('#form-group-module_slug,#form-group-statistic_slug').hide();
@@ -144,60 +144,61 @@ class MenusController extends CBController
 			";
 
         $this->col = [];
-        $this->col[] = ["label" => "Name", "name" => "name"];
-        $this->col[] = ["label" => "Is Active", "name" => "is_active"];
-        $this->col[] = ["label" => "Privileges", "name" => "id_cms_privileges", "join" => "cms_privileges,name"];
+        $this->col[] = ['label' => 'Name', 'name' => 'name'];
+        $this->col[] = ['label' => 'Is Active', 'name' => 'is_active'];
+        $this->col[] = ['label' => 'Privileges', 'name' => 'id_cms_privileges', 'join' => 'cms_privileges,name'];
 
         $this->form = [];
         $this->form[] = [
-            "label" => "Privileges",
-            "name" => "cms_menus_privileges",
-            "type" => "select2",
-            "select2_multiple" => true,
-            "datatable" => "cms_privileges,name",
-            "relationship_table" => "cms_menus_privileges",
-            "required" => true,
+            'label'              => 'Privileges',
+            'name'               => 'cms_menus_privileges',
+            'type'               => 'select2',
+            'select2_multiple'   => true,
+            'datatable'          => 'cms_privileges,name',
+            'relationship_table' => 'cms_menus_privileges',
+            'required'           => true,
         ];
         $this->form[] = [
-            "label" => "Name",
-            "name" => "name",
-            "type" => "text",
-            "required" => true,
-            "validation" => "required|min:3|max:255"
+            'label'       => 'Name',
+            'name'        => 'name',
+            'type'        => 'text',
+            'required'    => true,
+            'validation'  => 'required|min:3|max:255|string',
+            'placeholder' => 'You can only enter alphanumeric character and spaces only',
         ];
         $this->form[] = [
-            "label" => "Type",
-            "name" => "type",
-            "type" => "radio",
-            "required" => true,
+            'label'    => 'Type',
+            'name'     => 'type',
+            'type'     => 'radio',
+            'required' => true,
             'dataenum' => ['Module', 'Statistic', 'URL', 'Controller & Method', 'Route'],
-            'value' => 'Module',
+            'value'    => 'Module',
         ];
 
         $this->form[] = [
-            "label" => "Module",
-            "name" => "module_slug",
-            "type" => "select",
-            "datatable" => "cms_moduls,name",
-            "datatable_where" => "is_protected = 0",
-            "value" => $id_module,
+            'label'           => 'Module',
+            'name'            => 'module_slug',
+            'type'            => 'select',
+            'datatable'       => 'cms_moduls,name',
+            'datatable_where' => 'is_protected = 0',
+            'value'           => $id_module,
         ];
         $this->form[] = [
-            "label" => "Statistic",
-            "name" => "statistic_slug",
-            "type" => "select",
-            "datatable" => "cms_statistics,name",
-            "style" => "display:none",
-            "value" => $id_statistic,
+            'label'     => 'Statistic',
+            'name'      => 'statistic_slug',
+            'type'      => 'select',
+            'datatable' => 'cms_statistics,name',
+            'style'     => 'display:none',
+            'value'     => $id_statistic,
         ];
 
         $this->form[] = [
-            "label" => "Value",
-            "name" => "path",
-            "type" => "text",
-            'help' => 'If you select type controller, you can fill this field with controller name, you may include the method also',
+            'label'       => 'Value',
+            'name'        => 'path',
+            'type'        => 'text',
+            'help'        => 'If you select type controller, you can fill this field with controller name, you may include the method also',
             'placeholder' => 'NameController or NameController@methodName',
-            "style" => "display:none",
+            'style'       => 'display:none',
         ];
 
         $fontawesome = Fontawesome::getIcons();
@@ -205,34 +206,34 @@ class MenusController extends CBController
         $custom = view('crudbooster::components.list_icon', compact('fontawesome', 'row'))->render();
         $this->form[] = ['label' => 'Icon', 'name' => 'icon', 'type' => 'custom', 'html' => $custom, 'required' => true];
         $this->form[] = [
-            'label' => 'Color',
-            'name' => 'color',
-            'type' => 'select2',
+            'label'    => 'Color',
+            'name'     => 'color',
+            'type'     => 'select2',
             'dataenum' => ['normal', 'red', 'green', 'aqua', 'light-blue', 'red', 'yellow', 'muted'],
             'required' => true,
-            'value' => 'normal',
+            'value'    => 'normal',
         ];
         $this->form[] = [
-            "label" => "Active",
-            "name" => "is_active",
-            "type" => "radio",
-            "required" => true,
-            "validation" => "required|integer",
-            "dataenum" => ['1|Active', '0|InActive'],
-            'value' => '1',
+            'label'      => 'Active',
+            'name'       => 'is_active',
+            'type'       => 'radio',
+            'required'   => true,
+            'validation' => 'required|integer',
+            'dataenum'   => ['1|Active', '0|InActive'],
+            'value'      => '1',
         ];
         $this->form[] = [
-            "label" => "Dashboard",
-            "name" => "is_dashboard",
-            "type" => "radio",
-            "required" => true,
-            "validation" => "required|integer",
-            "dataenum" => ['1|Yes', '0|No'],
-            'value' => '0',
+            'label'      => 'Dashboard',
+            'name'       => 'is_dashboard',
+            'type'       => 'radio',
+            'required'   => true,
+            'validation' => 'required|integer',
+            'dataenum'   => ['1|Yes', '0|No'],
+            'value'      => '0',
         ];
 
         $id_cms_privileges = Request::get('id_cms_privileges');
-        $this->form[] = ["label" => "id_cms_privileges", "name" => "id_cms_privileges", "type" => "hidden", "value" => $id_cms_privileges];
+        $this->form[] = ['label' => 'id_cms_privileges', 'name' => 'id_cms_privileges', 'type' => 'hidden', 'value' => $id_cms_privileges];
     }
 
     public function getIndex()
@@ -241,8 +242,8 @@ class MenusController extends CBController
 
         $module = CRUDBooster::getCurrentModule();
         if (! CRUDBooster::isView() && $this->global_privilege == false) {
-            CRUDBooster::insertLog(cbLang('log_try_view', ['module' => $module->name]));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), cbLang('denied_access'));
+            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['module' => $module->name]));
+            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
         }
 
         $privileges = DB::table('cms_privileges')->get();
@@ -284,7 +285,7 @@ class MenusController extends CBController
 
         if ($postdata['type'] == 'Statistic') {
             $stat = CRUDBooster::first('cms_statistics', ['id' => $postdata['statistic_slug']]);
-            $postdata['path'] = 'statistic_builder/show/'.$stat->slug;
+            $postdata['path'] = 'statistic_builder/show/' . $stat->slug;
         } elseif ($postdata['type'] == 'Module') {
             $stat = CRUDBooster::first('cms_moduls', ['id' => $postdata['module_slug']]);
             $postdata['path'] = $stat->path;
@@ -295,23 +296,22 @@ class MenusController extends CBController
 
         if ($postdata['is_dashboard'] == 1) {
             //If set dashboard, so unset for first all dashboard
-            //DB::table('cms_menus')->where('id_cms_privileges', $postdata['id_cms_privileges'])->where('is_dashboard', 1)->update(['is_dashboard' => 0]);
-            Cache::forget('sidebarDashboard'.CRUDBooster::myPrivilegeId());
+            DB::table('cms_menus')->where('id_cms_privileges', $postdata['id_cms_privileges'])->where('is_dashboard', 1)->update(['is_dashboard' => 0]);
+            Cache::forget('sidebarDashboard' . CRUDBooster::myPrivilegeId());
         }
     }
 
     public function hook_before_edit(&$postdata, $id)
     {
-
         if ($postdata['is_dashboard'] == 1) {
             //If set dashboard, so unset for first all dashboard
-            //DB::table('cms_menus')->where('id_cms_privileges', $postdata['id_cms_privileges'])->where('is_dashboard', 1)->update(['is_dashboard' => 0]);
-            Cache::forget('sidebarDashboard'.CRUDBooster::myPrivilegeId());
+            DB::table('cms_menus')->where('id_cms_privileges', $postdata['id_cms_privileges'])->where('is_dashboard', 1)->update(['is_dashboard' => 0]);
+            Cache::forget('sidebarDashboard' . CRUDBooster::myPrivilegeId());
         }
 
         if ($postdata['type'] == 'Statistic') {
             $stat = CRUDBooster::first('cms_statistics', ['id' => $postdata['statistic_slug']]);
-            $postdata['path'] = 'statistic_builder/show/'.$stat->slug;
+            $postdata['path'] = 'statistic_builder/show/' . $stat->slug;
         } elseif ($postdata['type'] == 'Module') {
             $stat = CRUDBooster::first('cms_moduls', ['id' => $postdata['module_slug']]);
             $postdata['path'] = $stat->path;
@@ -326,26 +326,25 @@ class MenusController extends CBController
         DB::table('cms_menus')->where('parent_id', $id)->delete();
     }
 
+    private function loopMenus($data, $parent = 0)
+    {
+        $isActive = Request::input('isActive');
+        $i = 1;
+        foreach ($data as $ro) {
+            $pid = $ro['id'];
+            if ($ro['children'][0]) {
+                $this->loopMenus($ro['children'][0], $pid);
+            }
+            DB::table('cms_menus')->where('id', $pid)->update(['sorting' => $i, 'parent_id' => $parent, 'is_active' => $isActive]);
+            $i++;
+        }
+    }
+
     public function postSaveMenu()
     {
         $post = Request::input('menus');
-        $isActive = Request::input('isActive');
         $post = json_decode($post, true);
-
-        $i = 1;
-        foreach ($post[0] as $ro) {
-            $pid = $ro['id'];
-            if ($ro['children'][0]) {
-                $ci = 1;
-                foreach ($ro['children'][0] as $c) {
-                    $id = $c['id'];
-                    DB::table('cms_menus')->where('id', $id)->update(['sorting' => $ci, 'parent_id' => $pid, 'is_active' => $isActive]);
-                    $ci++;
-                }
-            }
-            DB::table('cms_menus')->where('id', $pid)->update(['sorting' => $i, 'parent_id' => 0, 'is_active' => $isActive]);
-            $i++;
-        }
+        $this->loopMenus($post[0]);
 
         return response()->json(['success' => true]);
     }

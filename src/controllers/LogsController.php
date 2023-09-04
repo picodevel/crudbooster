@@ -1,7 +1,6 @@
-<?php namespace crocodicstudio\crudbooster\controllers;
+<?php
 
-use Illuminate\Support\Facades\Excel;
-use Illuminate\Support\Facades\PDF;
+namespace crocodicstudio\crudbooster\controllers;
 
 class LogsController extends CBController
 {
@@ -9,7 +8,7 @@ class LogsController extends CBController
     {
         $this->table = 'cms_logs';
         $this->primary_key = 'id';
-        $this->title_field = "ipaddress";
+        $this->title_field = 'ipaddress';
         $this->button_bulk_action = true;
         $this->button_export = false;
         $this->button_import = false;
@@ -18,25 +17,25 @@ class LogsController extends CBController
         $this->button_delete = true;
 
         $this->col = [];
-        $this->col[] = ["label" => "Time Access", "name" => "created_at"];
-        $this->col[] = ["label" => "IP Address", "name" => "ipaddress"];
-        $this->col[] = ["label" => "User", "name" => "id_cms_users", "join" => config('crudbooster.USER_TABLE').",name"];
-        $this->col[] = ["label" => "Description", "name" => "description"];
+        $this->col[] = ['label' => 'Time Access', 'name' => 'created_at'];
+        $this->col[] = ['label' => 'IP Address', 'name' => 'ipaddress'];
+        $this->col[] = ['label' => 'User', 'name' => 'id_cms_users', 'join' => config('crudbooster.USER_TABLE') . ',name'];
+        $this->col[] = ['label' => 'Description', 'name' => 'description'];
 
         $this->form = [];
-        $this->form[] = ["label" => "Time Access", "name" => "created_at", "readonly" => true];
-        $this->form[] = ["label" => "IP Address", "name" => "ipaddress", "readonly" => true];
-        $this->form[] = ["label" => "User Agent", "name" => "useragent", "readonly" => true];
-        $this->form[] = ["label" => "URL", "name" => "url", "readonly" => true];
+        $this->form[] = ['label' => 'Time Access', 'name' => 'created_at', 'readonly' => true];
+        $this->form[] = ['label' => 'IP Address', 'name' => 'ipaddress', 'readonly' => true];
+        $this->form[] = ['label' => 'User Agent', 'name' => 'useragent', 'readonly' => true];
+        $this->form[] = ['label' => 'URL', 'name' => 'url', 'readonly' => true];
         $this->form[] = [
-            "label" => "User",
-            "name" => "id_cms_users",
-            "type" => "select",
-            "datatable" => config('crudbooster.USER_TABLE').",name",
-            "readonly" => true,
+            'label'     => 'User',
+            'name'      => 'id_cms_users',
+            'type'      => 'select',
+            'datatable' => config('crudbooster.USER_TABLE') . ',name',
+            'readonly'  => true,
         ];
-        $this->form[] = ["label" => "Description", "name" => "description", "readonly" => true];
-        $this->form[] = ["label" => "Details", "name" => "details", "type" => "custom"];
+        $this->form[] = ['label' => 'Description', 'name' => 'description', 'readonly' => true];
+        $this->form[] = ['label' => 'Details', 'name' => 'details', 'type' => 'custom'];
     }
 
     public static function displayDiff($old_values, $new_values)

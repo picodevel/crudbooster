@@ -66,22 +66,22 @@
                     <div class="box-body">
                         <?php
                         $set = DB::table('cms_settings')->where('group_setting', $page_title)->get();
-                        foreach($set as $s):
+                        foreach ($set as $s):
 
-                        $value = $s->content;
+                            $value = $s->content;
 
-                        if (! $s->label) {
-                            $label = ucwords(str_replace('_', ' ', $s->name));
-                            DB::table('cms_settings')->where('id', $s->id)->update(['label' => $label]);
-                            $s->label = $label;
-                        }
+                            if (! $s->label) {
+                                $label = ucwords(str_replace('_', ' ', $s->name));
+                                DB::table('cms_settings')->where('id', $s->id)->update(['label' => $label]);
+                                $s->label = $label;
+                            }
 
-                        $dataenum = explode(',', $s->dataenum);
-                        if ($dataenum) {
-                            array_walk($dataenum, 'trim');
-                        }
+                            $dataenum = explode(',', $s->dataenum);
+                            if ($dataenum) {
+                                array_walk($dataenum, 'trim');
+                            }
 
-                        ?>
+                            ?>
                         <div class='form-group'>
                             <label class='label-setting' title="{{$s->name}}">{{$s->label}}
                                 <a style="visibility:hidden" href='{{CRUDBooster::mainpath("edit/$s->id")}}' title='Edit This Meta Setting'
@@ -91,73 +91,73 @@
                                 ><i class='fa fa-trash'></i></a>
                             </label>
                             <?php
-                            switch ($s->content_input_type) {
-                                case 'text':
-                                    echo "<input type='text' class='form-control' name='$s->name' value='$value'/>";
-                                    break;
-                                case 'number':
-                                    echo "<input type='number' class='form-control' name='$s->name' value='$value'/>";
-                                    break;
-                                case 'email':
-                                    echo "<input type='email' class='form-control' name='$s->name' value='$value'/>";
-                                    break;
-                                case 'textarea':
-                                    echo "<textarea name='$s->name' class='form-control'>$value</textarea>";
-                                    break;
-                                case 'wysiwyg':
-                                    echo "<textarea name='$s->name' class='form-control wysiwyg'>$value</textarea>";
-                                    break;
-                                case 'upload':
-                                case 'upload_image':
-                                    if ($value) {
-                                        echo "<p><a href='".asset($value)."' target='_blank' title='Download the file of $s->label'><i class='fa fa-download'></i> Download the File  of $s->label</a></p>";
-                                        echo "<input type='hidden' name='$s->name' value='$value'/>";
-                                        echo "<div class='pull-right'><a class='btn btn-danger btn-xs' onclick='if(confirm(\"Are you sure want to delete ?\")) location.href=\"".CRUDBooster::mainpath("delete-file-setting?id=$s->id")."\"' title='Click here to delete'><i class='fa fa-trash'></i></a></div>";
-                                    } else {
-                                        echo "<input type='file' name='$s->name' class='form-control'/>";
-                                    }
-                                    echo "<div class='help-block'>File support only jpg,png,gif, Max 10 MB</div>";
-                                    break;
-                                case 'upload_file':
-                                    if ($value) {
-                                        echo "<p><a href='".asset($value)."' target='_blank' title='Download the file of $s->label'><i class='fa fa-download'></i> Download the File  of $s->label</a></p>";
-                                        echo "<input type='hidden' name='$s->name' value='$value'/>";
-                                        echo "<div class='pull-right'><a class='btn btn-danger btn-xs' onclick='if(confirm(\"Are you sure want to delete ?\")) location.href=\"".CRUDBooster::mainpath("delete-file-setting?id=$s->id")."\"' title='Click here to delete'><i class='fa fa-trash'></i></a></div>";
-                                    } else {
-                                        echo "<input type='file' name='$s->name' class='form-control'/>";
-                                    }
-                                    echo "<div class='help-block'>File support only doc,docx,xls,xlsx,ppt,pptx,pdf,zip,rar, Max 20 MB</div>";
-                                    break;
-                                case 'datepicker':
-                                    echo "<input type='text' class='datepicker form-control' name='$s->name' value='$value'/>";
-                                    break;
-                                case 'radio':
-                                    if ($dataenum):
-                                        echo "<br/>";
-                                        foreach ($dataenum as $enum) {
-                                            $checked = ($enum == $value) ? "checked" : "";
-                                            echo "<label class='radio-inline'>";
-                                            echo "<input type='radio' name='".$s->name."' value='$enum' $checked > $enum";
-                                            echo "</label>";
+                                switch ($s->content_input_type) {
+                                    case 'text':
+                                        echo "<input type='text' class='form-control' name='$s->name' value='$value'/>";
+                                        break;
+                                    case 'number':
+                                        echo "<input type='number' step='0.0001' class='form-control' name='$s->name' value='$value'/>";
+                                        break;
+                                    case 'email':
+                                        echo "<input type='email' class='form-control' name='$s->name' value='$value'/>";
+                                        break;
+                                    case 'textarea':
+                                        echo "<textarea name='$s->name' class='form-control'>$value</textarea>";
+                                        break;
+                                    case 'wysiwyg':
+                                        echo "<textarea name='$s->name' class='form-control wysiwyg'>$value</textarea>";
+                                        break;
+                                    case 'upload':
+                                    case 'upload_image':
+                                        if ($value) {
+                                            echo "<p><a href='" . asset($value) . "' target='_blank' title='Download the file of $s->label'><i class='fa fa-download'></i> Download the File  of $s->label</a></p>";
+                                            echo "<input type='hidden' name='$s->name' value='$value'/>";
+                                            echo "<div class='pull-right'><a class='btn btn-danger btn-xs' onclick='if(confirm(\"Are you sure want to delete ?\")) location.href=\"" . CRUDBooster::mainpath("delete-file-setting?id=$s->id") . "\"' title='Click here to delete'><i class='fa fa-trash'></i></a></div>";
+                                        } else {
+                                            echo "<input type='file' name='$s->name' class='form-control'/>";
                                         }
-                                    endif;
-                                    break;
-                                case 'select':
-                                    echo "<select name='$s->name' class='form-control'><option value=''>** Please select $s->label</option>";
-                                    if ($dataenum):
-                                        foreach ($dataenum as $enum) {
-                                            $selected = ($enum == $value) ? "selected" : "";
-                                            echo "<option $selected value='$enum'>$enum</option>";
+                                        echo "<div class='help-block'>File support only jpg,png,gif, Max 10 MB</div>";
+                                        break;
+                                    case 'upload_file':
+                                        if ($value) {
+                                            echo "<p><a href='" . asset($value) . "' target='_blank' title='Download the file of $s->label'><i class='fa fa-download'></i> Download the File  of $s->label</a></p>";
+                                            echo "<input type='hidden' name='$s->name' value='$value'/>";
+                                            echo "<div class='pull-right'><a class='btn btn-danger btn-xs' onclick='if(confirm(\"Are you sure want to delete ?\")) location.href=\"" . CRUDBooster::mainpath("delete-file-setting?id=$s->id") . "\"' title='Click here to delete'><i class='fa fa-trash'></i></a></div>";
+                                        } else {
+                                            echo "<input type='file' name='$s->name' class='form-control'/>";
                                         }
-                                    endif;
-                                    echo "</select>";
-                                    break;
-                            }
+                                        echo "<div class='help-block'>File support only doc,docx,xls,xlsx,ppt,pptx,pdf,zip,rar, Max 20 MB</div>";
+                                        break;
+                                    case 'datepicker':
+                                        echo "<input type='text' class='datepicker form-control' name='$s->name' value='$value'/>";
+                                        break;
+                                    case 'radio':
+                                        if ($dataenum):
+                                            echo '<br/>';
+                                            foreach ($dataenum as $enum) {
+                                                $checked = ($enum == $value) ? 'checked' : '';
+                                                echo "<label class='radio-inline'>";
+                                                echo "<input type='radio' name='" . $s->name . "' value='$enum' $checked > $enum";
+                                                echo '</label>';
+                                            }
+                                        endif;
+                                        break;
+                                    case 'select':
+                                        echo "<select name='$s->name' class='form-control'><option value=''>** Please select $s->label</option>";
+                                        if ($dataenum):
+                                            foreach ($dataenum as $enum) {
+                                                $selected = ($enum == $value) ? 'selected' : '';
+                                                echo "<option $selected value='$enum'>$enum</option>";
+                                            }
+                                        endif;
+                                        echo '</select>';
+                                        break;
+                                }
                             ?>
 
                             <div class='help-block'>{{$s->helper}}</div>
                         </div>
-                        <?php endforeach;?>
+                        <?php endforeach; ?>
                     </div><!-- /.box-body -->
                     <div class="box-footer">
                         <div class='pull-right'>

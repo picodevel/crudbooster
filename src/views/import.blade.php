@@ -109,12 +109,12 @@
 
             <?php
             if ($data_sub_module) {
-                $action_path = Route($data_sub_module->controller."GetIndex");
+                $action_path = Route($data_sub_module->controller . 'GetIndex');
             } else {
                 $action_path = CRUDBooster::mainpath();
             }
 
-            $action = $action_path."/done-import?file=".Request::get('file').'&import=1';
+            $action = $action_path . '/done-import?file=' . Request::get('file') . '&import=1';
             ?>
 
             <form method='post' id="form" enctype="multipart/form-data" action='{{$action}}'>
@@ -137,12 +137,14 @@
                             @foreach($table_columns as $k=>$column)
                                 <?php
                                 $help = '';
-                                if ($column == 'id' || $column == 'created_at' || $column == 'updated_at' || $column == 'deleted_at') continue;
-                                if (substr($column, 0, 3) == 'id_') {
-                                    $relational_table = substr($column, 3);
-                                    $help = "<a href='#' title='This is foreign key, so the System will be inserting new data to table `$relational_table` if doesn`t exists'><strong>(?)</strong></a>";
-                                }
-                                ?>
+            if ($column == 'id' || $column == 'created_at' || $column == 'updated_at' || $column == 'deleted_at') {
+                continue;
+            }
+            if (substr($column, 0, 3) == 'id_') {
+                $relational_table = substr($column, 3);
+                $help = "<a href='#' title='This is foreign key, so the System will be inserting new data to table `$relational_table` if doesn`t exists'><strong>(?)</strong></a>";
+            }
+            ?>
                                 <th data-no-column='{{$k}}'>{{ $column }} {!! $help !!}</th>
                             @endforeach
                         </tr>
@@ -151,7 +153,9 @@
 
                         <tr>
                             @foreach($table_columns as $k=>$column)
-                                <?php if ($column == 'id' || $column == 'created_at' || $column == 'updated_at' || $column == 'deleted_at') continue;?>
+                                <?php if ($column == 'id' || $column == 'created_at' || $column == 'updated_at' || $column == 'deleted_at') {
+                                    continue;
+                                }?>
                                 <td data-no-column='{{$k}}'>
                                     <select style='width:120px' class='form-control select_column' name='select_column[{{$k}}]'>
                                         <option value=''>** Set Column for {{$column}}</option>
@@ -230,12 +234,12 @@
 
             <?php
             if ($data_sub_module) {
-                $action_path = Route($data_sub_module->controller."GetIndex");
+                $action_path = Route($data_sub_module->controller . 'GetIndex');
             } else {
                 $action_path = CRUDBooster::mainpath();
             }
 
-            $action = $action_path."/do-upload-import-data";
+            $action = $action_path . '/do-upload-import-data';
             ?>
 
             <form method='post' id="form" enctype="multipart/form-data" action='{{$action}}'>

@@ -6,21 +6,21 @@
         @if(CRUDBooster::getCurrentMethod() != 'getProfile' && $button_cancel)
             @if(g('return_url'))
                 <p><a title='Return' href='{{g("return_url")}}'><i class='fa fa-chevron-circle-left '></i>
-                        &nbsp; {{cbLang("form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name])}}</a></p>
+                        &nbsp; {{trans("crudbooster.form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name])}}</a></p>
             @else
                 <p><a title='Main Module' href='{{CRUDBooster::mainpath()}}'><i class='fa fa-chevron-circle-left '></i>
-                        &nbsp; {{cbLang("form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name])}}</a></p>
+                        &nbsp; {{trans("crudbooster.form_back_to_list",['module'=>CRUDBooster::getCurrentModule()->name])}}</a></p>
             @endif
         @endif
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <strong><i class='{{CRUDBooster::getCurrentModule()->icon}}'></i> {!! $page_title !!}</strong>
+                <strong><i class='{{CRUDBooster::getCurrentModule()->icon}}'></i> {!! $page_title or "Page Title" !!}</strong>
             </div>
 
-            <div class="panel-body" style="padding:20px 0px 0px 0px">
+            <div class="panel-body" style="padding:20px 0px 0px 0px;background-color:#F9F9F9;">
                 <?php
-                $action = (@$row) ? CRUDBooster::mainpath("edit-save/$row->id") : CRUDBooster::mainpath("add-save");
+                $action = (@$row) ? CRUDBooster::mainpath('edit-save/' . $row->{$pk}) : CRUDBooster::mainpath('add-save');
                 $return_url = ($return_url) ?: g('return_url');
                 ?>
                 <form class='form-horizontal' method='post' id="form" enctype="multipart/form-data" action='{{$action}}'>
@@ -48,20 +48,20 @@
                                 @if($button_cancel && CRUDBooster::getCurrentMethod() != 'getDetail')
                                     @if(g('return_url'))
                                         <a href='{{g("return_url")}}' class='btn btn-default'><i
-                                                    class='fa fa-chevron-circle-left'></i> {{cbLang("button_back")}}</a>
+                                                    class='fa fa-chevron-circle-left'></i> {{trans("crudbooster.button_back")}}</a>
                                     @else
                                         <a href='{{CRUDBooster::mainpath("?".http_build_query(@$_GET)) }}' class='btn btn-default'><i
-                                                    class='fa fa-chevron-circle-left'></i> {{cbLang("button_back")}}</a>
+                                                    class='fa fa-chevron-circle-left'></i> {{trans("crudbooster.button_back")}}</a>
                                     @endif
                                 @endif
                                 @if(CRUDBooster::isCreate() || CRUDBooster::isUpdate())
 
                                     @if(CRUDBooster::isCreate() && $button_addmore==TRUE && $command == 'add')
-                                        <input type="submit" name="submit" value='{{cbLang("button_save_more")}}' class='btn btn-success'>
+                                        <input type="submit" name="submit" value='{{trans("crudbooster.button_save_more")}}' class='btn btn-success'>
                                     @endif
 
                                     @if($button_save && $command != 'detail')
-                                        <input type="submit" name="submit" value='{{cbLang("button_save")}}' class='btn btn-success'>
+                                        <input type="submit" name="submit" value='{{trans("crudbooster.button_save")}}' class='btn btn-success'>
                                     @endif
 
                                 @endif

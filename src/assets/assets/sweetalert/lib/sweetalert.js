@@ -83,14 +83,14 @@ exports['default'] = sweetAlert = swal = function () {
 
   switch (typeof customizations) {
 
-    // Ex: swal("Hello", "Just testing", "info");
+    // Ex: swal("hi", "Just testing", "info");
     case 'string':
       params.title = customizations;
       params.text = arguments[1] || '';
       params.type = arguments[2] || '';
       break;
 
-    // Ex: swal({ title:"Hello", text: "Just testing", type: "info" });
+    // Ex: swal({ title:"hi", text: "Just testing", type: "info" });
     case 'object':
       if (customizations.title === undefined) {
         _extend$hexToRgb$isIE8$logStr$colorLuminance.logStr('Missing "title" argument!');

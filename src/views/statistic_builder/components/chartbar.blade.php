@@ -50,16 +50,16 @@
     @if($key == 'sql')
         <?php
         $sqls = explode(';', $value);
-        $dataPoints = array();
-        $datax = array();
+        $dataPoints = [];
+        $datax = [];
 
         foreach ($sqls as $i => $sql) {
 
-            $datamerger = array();
+            $datamerger = [];
 
             $sessions = Session::all();
             foreach ($sessions as $key => $val) {
-                $sql = str_replace("[".$key."]", $val, $sql);
+                $sql = str_replace('[' . $key . ']', $val, $sql);
             }
 
             try {
@@ -83,9 +83,9 @@
             $a = str_slug($a, '_');
         }
 
-        $data_result = array();
+        $data_result = [];
         foreach ($datax as $i => $d) {
-            $dr = array();
+            $dr = [];
             $dr['y'] = $d;
             foreach ($area_name as $e => $name) {
                 $name = str_slug($name, '_');

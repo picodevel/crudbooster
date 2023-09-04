@@ -1,3 +1,5 @@
+
+
 @push('bottom')
     <script>
         $(function () {

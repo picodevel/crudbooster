@@ -3,7 +3,7 @@
 namespace crocodicstudio\crudbooster\middlewares;
 
 use Closure;
-use crocodicstudio\crudbooster\helpers\CRUDBooster;
+use CRUDBooster;
 
 class CBAuthAPI
 {
@@ -16,7 +16,6 @@ class CBAuthAPI
      */
     public function handle($request, Closure $next)
     {
-
 
         CRUDBooster::authAPI();
 

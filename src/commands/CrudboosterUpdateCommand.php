@@ -1,11 +1,9 @@
-<?php namespace crocodicstudio\crudbooster\commands;
+<?php
 
-use App;
+namespace crocodicstudio\crudbooster\commands;
+
 use Cache;
-use CRUDBooster;
-use DB;
 use Illuminate\Console\Command;
-use Request;
 use Symfony\Component\Process\Process;
 
 class CrudboosterUpdateCommand extends Command
@@ -62,12 +60,15 @@ class CrudboosterUpdateCommand extends Command
 
         $this->info('Dumping the autoloaded files and reloading all new files...');
         $composer = $this->findComposer();
-        $process = new Process($composer.' dumpautoload');
+        $process = new Process($composer . ' dumpautoload');
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Migrating database...');
         $this->call('migrate');
 
+        if (! class_exists('CBSeeder')) {
+            require_once __DIR__ . '/../database/seeds/CBSeeder.php';
+        }
         $this->call('db:seed', ['--class' => 'CBSeeder']);
 
         $this->info('Clearing Cache...');
@@ -109,7 +110,7 @@ class CrudboosterUpdateCommand extends Command
         if (version_compare(phpversion(), '5.6.0', '>=')) {
             $this->info('PHP Version (>= 5.6.*): [Good]');
         } else {
-            $this->info('PHP Version (>= 5.6.*): [Bad] Yours: '.phpversion());
+            $this->info('PHP Version (>= 5.6.*): [Bad] Yours: ' . phpversion());
             $system_failed++;
         }
 
@@ -198,8 +199,8 @@ class CrudboosterUpdateCommand extends Command
      */
     protected function findComposer()
     {
-        if (file_exists(getcwd().'/composer.phar')) {
-            return '"'.PHP_BINARY.'" '.getcwd().'/composer.phar';
+        if (file_exists(getcwd() . '/composer.phar')) {
+            return '"' . PHP_BINARY . '" ' . getcwd() . '/composer.phar';
         }
 
         return 'composer';

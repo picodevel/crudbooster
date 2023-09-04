@@ -1,9 +1,9 @@
-<?php namespace crocodicstudio\crudbooster\controllers;
+<?php
+
+namespace crocodicstudio\crudbooster\controllers;
 
 use CRUDbooster;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Excel;
-use Illuminate\Support\Facades\PDF;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,7 +13,7 @@ class ApiCustomController extends CBController
     {
         $this->table = 'cms_apicustom';
         $this->primary_key = 'id';
-        $this->title_field = "nama";
+        $this->title_field = 'nama';
         $this->button_show = false;
         $this->button_new = false;
         $this->button_delete = false;
@@ -22,13 +22,13 @@ class ApiCustomController extends CBController
         $this->button_export = false;
     }
 
-    function getIndex()
+    public function getIndex()
     {
         $this->cbLoader();
 
         if (! CRUDBooster::isSuperadmin()) {
-            CRUDBooster::insertLog(cbLang("log_try_view", ['name' => 'API Index', 'module' => 'API']));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), cbLang('denied_access'));
+            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => 'API Index', 'module' => 'API']));
+            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
         }
 
         $data = [];
@@ -40,7 +40,7 @@ class ApiCustomController extends CBController
         return view('crudbooster::api_documentation', $data);
     }
 
-    function apiDocumentation()
+    public function apiDocumentation()
     {
         $this->cbLoader();
         $data = [];
@@ -50,16 +50,16 @@ class ApiCustomController extends CBController
         return view('crudbooster::api_documentation_public', $data);
     }
 
-    function getDownloadPostman()
+    public function getDownloadPostman()
     {
         $this->cbLoader();
         $data = [];
         $data['variables'] = [];
         $data['info'] = [
-            'name' => CRUDBooster::getSetting('appname').' - API',
-            '_postman_id' => "1765dd11-73d1-2978-ae11-36921dc6263d",
+            'name'        => CRUDBooster::getSetting('appname') . ' - API',
+            '_postman_id' => '1765dd11-73d1-2978-ae11-36921dc6263d',
             'description' => '',
-            'schema' => 'https://schema.getpostman.com/json/collection/v2.0.0/collection.json',
+            'schema'      => 'https://schema.getpostman.com/json/collection/v2.0.0/collection.json',
         ];
         $items = [];
         $apis = DB::table('cms_apicustom')->orderby('nama', 'asc')->get();
@@ -81,7 +81,7 @@ class ApiCustomController extends CBController
 
             if (strtolower($a->method_type) == 'get') {
                 if ($httpbuilder) {
-                    $httpbuilder = "?".http_build_query($httpbuilder);
+                    $httpbuilder = '?' . http_build_query($httpbuilder);
                 } else {
                     $httpbuilder = '';
                 }
@@ -90,13 +90,13 @@ class ApiCustomController extends CBController
             }
 
             $items[] = [
-                'name' => $a->nama,
+                'name'    => $a->nama,
                 'request' => [
-                    'url' => url('api/'.$a->permalink).$httpbuilder,
+                    'url'    => url('api/' . $a->permalink) . $httpbuilder,
                     'method' => $a->method_type ?: 'GET',
                     'header' => [],
-                    'body' => [
-                        'mode' => 'formdata',
+                    'body'   => [
+                        'mode'     => 'formdata',
                         'formdata' => $formdata,
                     ],
                     'description' => $a->keterangan,
@@ -108,8 +108,8 @@ class ApiCustomController extends CBController
         $json = json_encode($data);
 
         return \Response::make($json, 200, [
-            'Content-Type' => 'application/json',
-            'Content-Disposition' => 'attachment; filename='.CRUDBooster::getSetting('appname').' - API For POSTMAN.json',
+            'Content-Type'        => 'application/json',
+            'Content-Disposition' => 'attachment; filename=' . CRUDBooster::getSetting('appname') . ' - API For POSTMAN.json',
         ]);
     }
 
@@ -128,8 +128,8 @@ class ApiCustomController extends CBController
         $this->cbLoader();
 
         if (! CRUDBooster::isSuperadmin()) {
-            CRUDBooster::insertLog(cbLang("log_try_view", ['name' => 'API Index', 'module' => 'API']));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), cbLang('denied_access'));
+            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => 'API Index', 'module' => 'API']));
+            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
         }
 
         $data['page_title'] = 'API Generator';
@@ -153,8 +153,8 @@ class ApiCustomController extends CBController
         $this->cbLoader();
 
         if (! CRUDBooster::isSuperadmin()) {
-            CRUDBooster::insertLog(cbLang("log_try_view", ['name' => 'API Edit', 'module' => 'API']));
-            CRUDBooster::redirect(CRUDBooster::adminPath(), cbLang('denied_access'));
+            CRUDBooster::insertLog(trans('crudbooster.log_try_view', ['name' => 'API Edit', 'module' => 'API']));
+            CRUDBooster::redirect(CRUDBooster::adminPath(), trans('crudbooster.denied_access'));
         }
 
         $row = DB::table('cms_apicustom')->where('id', $id)->first();
@@ -178,7 +178,7 @@ class ApiCustomController extends CBController
         return view('crudbooster::api_generator', $data);
     }
 
-    function getGenerateScreetKey()
+    public function getGenerateScreetKey()
     {
         $this->cbLoader();
         //Generate a random string.
@@ -188,10 +188,10 @@ class ApiCustomController extends CBController
         $token = bin2hex($token);
 
         $id = DB::table('cms_apikey')->insertGetId([
-            'screetkey' => $token,
+            'screetkey'  => $token,
             'created_at' => date('Y-m-d H:i:s'),
-            'status' => 'active',
-            'hit' => 0,
+            'status'     => 'active',
+            'hit'        => 0,
         ]);
 
         $response = [];
@@ -206,7 +206,7 @@ class ApiCustomController extends CBController
         CRUDBooster::valid(['id', 'status'], 'view');
 
         $id = Request::get('id');
-        $status = (Request::get('status') == 1) ? "active" : "non active";
+        $status = (Request::get('status') == 1) ? 'active' : 'non active';
 
         DB::table('cms_apikey')->where('id', $id)->update(['status' => $status]);
 
@@ -224,7 +224,7 @@ class ApiCustomController extends CBController
         }
     }
 
-    function getColumnTable($table, $type = 'list')
+    public function getColumnTable($table, $type = 'list')
     {
         $this->cbLoader();
         $result = [];
@@ -243,12 +243,12 @@ class ApiCustomController extends CBController
 
             $type_field = CRUDBooster::getFieldType($table, $ro);
 
-            $type_field = (array_search($ro, explode(',', config('crudbooster.EMAIL_FIELDS_CANDIDATE'))) !== false) ? "email" : $type_field;
-            $type_field = (array_search($ro, explode(',', config('crudbooster.IMAGE_FIELDS_CANDIDATE'))) !== false) ? "image" : $type_field;
-            $type_field = (array_search($ro, explode(',', config('crudbooster.PASSWORD_FIELDS_CANDIDATE'))) !== false) ? "password" : $type_field;
+            $type_field = (array_search($ro, explode(',', config('crudbooster.EMAIL_FIELDS_CANDIDATE'))) !== false) ? 'email' : $type_field;
+            $type_field = (array_search($ro, explode(',', config('crudbooster.IMAGE_FIELDS_CANDIDATE'))) !== false) ? 'image' : $type_field;
+            $type_field = (array_search($ro, explode(',', config('crudbooster.PASSWORD_FIELDS_CANDIDATE'))) !== false) ? 'password' : $type_field;
 
-            $type_field = (substr($ro, -3) == '_id') ? "integer" : $type_field;
-            $type_field = (substr($ro, 0, 3) == 'id_') ? "integer" : $type_field;
+            $type_field = (substr($ro, -3) == '_id') ? 'integer' : $type_field;
+            $type_field = (substr($ro, 0, 3) == 'id_') ? 'integer' : $type_field;
 
             $new_result[] = ['name' => $ro, 'type' => $type_field];
 
@@ -264,8 +264,8 @@ class ApiCustomController extends CBController
                             }
 
                             $type_field = CRUDBooster::getFieldType($table2, $t);
-                            $t = str_replace("_$table2", "", $t);
-                            $new_result[] = ['name' => $table2.'_'.$t, 'type' => $type_field];
+                            $t = str_replace("_$table2", '', $t);
+                            $new_result[] = ['name' => $table2 . '_' . $t, 'type' => $type_field];
                         }
                     }
                 }
@@ -275,7 +275,7 @@ class ApiCustomController extends CBController
         return response()->json($new_result);
     }
 
-    function postSaveApiCustom()
+    public function postSaveApiCustom()
     {
         $this->cbLoader();
         $posts = Request::all();
@@ -298,11 +298,11 @@ class ApiCustomController extends CBController
         for ($i = 0; $i <= count($params_name); $i++) {
             if ($params_name[$i]) {
                 $json[] = [
-                    'name' => $params_name[$i],
-                    'type' => $params_type[$i],
-                    'config' => $params_config[$i],
+                    'name'     => $params_name[$i],
+                    'type'     => $params_type[$i],
+                    'config'   => $params_config[$i],
                     'required' => $params_required[$i],
-                    'used' => $params_used[$i],
+                    'used'     => $params_used[$i],
                 ];
             }
         }
@@ -320,10 +320,10 @@ class ApiCustomController extends CBController
         for ($i = 0; $i <= count($responses_name); $i++) {
             if ($responses_name[$i]) {
                 $json[] = [
-                    'name' => $responses_name[$i],
-                    'type' => $responses_type[$i],
+                    'name'     => $responses_name[$i],
+                    'type'     => $responses_type[$i],
                     'subquery' => $responses_subquery[$i],
-                    'used' => $responses_used[$i],
+                    'used'     => $responses_used[$i],
                 ];
             }
         }
@@ -346,7 +346,7 @@ class ApiCustomController extends CBController
         return redirect(CRUDBooster::mainpath())->with(['message' => 'Yeay, your api has been saved successfully !', 'message_type' => 'success']);
     }
 
-    function getDeleteApi($id)
+    public function getDeleteApi($id)
     {
         $this->cbLoader();
         $row = DB::table('cms_apicustom')->where('id', $id)->first();
@@ -354,7 +354,7 @@ class ApiCustomController extends CBController
 
         $controllername = ucwords(str_replace('_', ' ', $row->permalink));
         $controllername = str_replace(' ', '', $controllername);
-        @unlink(base_path("app/Http/Controllers/Api".$controllername."Controller.php"));
+        @unlink(base_path('app/Http/Controllers/Api' . $controllername . 'Controller.php'));
 
         return response()->json(['status' => 1]);
     }

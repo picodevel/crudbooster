@@ -41,13 +41,13 @@
         function initMap{{$name}}() {
                     @if($row->{$form['latitude']} && $row->{$form['longitude']})
             var map = new google.maps.Map(document.getElementById('map-{{$name}}'), {
-                    center: {lat: <?php echo $row->{$form['latitude']} ?: 0;?>, lng: <?php echo $row->{$form['longitude']} ?: 0;?> },
+                    center: {lat: <?php echo $row->{$form['latitude']} ?: 0; ?>, lng: <?php echo $row->{$form['longitude']} ?: 0; ?> },
                     zoom: 12
                 });
             var infoWindow = new google.maps.InfoWindow();
 
             var marker = new google.maps.Marker({
-                position: {lat: <?php echo $row->{$form['latitude']} ?: 0;?>, lng: <?php echo $row->{$form['longitude']} ?: 0;?> },
+                position: {lat: <?php echo $row->{$form['latitude']} ?: 0; ?>, lng: <?php echo $row->{$form['longitude']} ?: 0; ?> },
                 map: map,
                 title: '{{$value}}'
             });

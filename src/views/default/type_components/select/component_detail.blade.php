@@ -1,4 +1,5 @@
 <?php
+
 if ($form['datatable']) {
     $datatable = explode(',', $form['datatable']);
     $table = $datatable[0];
@@ -20,4 +21,3 @@ if ($form['dataquery']) {
 if ($form['dataenum']) {
     echo $value;
 }
-?>

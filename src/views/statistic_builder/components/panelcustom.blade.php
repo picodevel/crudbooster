@@ -42,14 +42,14 @@
     </form>
 @elseif($command=='showFunction')
     <?php
-    if($key == 'value') {
-    if ($config->type == 'controller') {
-        $url = action($value);
-    } elseif ($config->type == 'route') {
-        $url = route($value);
-    }
-    echo "<div id='content-$componentID'></div>";
-    ?>
+    if ($key == 'value') {
+        if ($config->type == 'controller') {
+            $url = action($value);
+        } elseif ($config->type == 'route') {
+            $url = route($value);
+        }
+        echo "<div id='content-$componentID'></div>";
+        ?>
 
     <script>
         $(function () {
@@ -61,7 +61,7 @@
     </script>
 
     <?php
-    }else {
+    } else {
         echo $value;
     }
     ?>
