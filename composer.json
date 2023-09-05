@@ -27,7 +27,7 @@
         "unisharp/laravel-filemanager": "1.7.7",
         "intervention/imagecache":"2.*",
         "imanghafoori/laravel-heyman": "2.*",
-        "imanghafoori/laravel-widgetize": "1.*"
+        "imanghafoori/laravel-widgetize": "2.*"
     },
     "autoload": {
         "psr-4": {
